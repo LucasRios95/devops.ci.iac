@@ -17,6 +17,37 @@ resource "aws_iam_openid_connect_provider" "oidc-git" {
   }
 }
 
+resource "aws_iam_role" "tf-role" {
+  name = "tf-role"
+  assume_role_policy = jsonencode({
+    Statement : [
+      {
+        Effect : "Allow",
+        Action : "sts:AssumeRoleWithWebIdentity",
+        Principal : {
+          Federated : "arn:aws:iam::751647213111:oidc-provider/token.actions.githubusercontent.com"
+        },
+        Condition : {
+          StringEquals : {
+            "token.actions.githubusercontent.com:aud" : [
+              "sts.amazonaws.com"
+            ]
+          },
+          StringLike : {
+            "token.actions.githubusercontent.com:sub" : [
+              "repo:LucasRios95/devops.ci.iac:ref:refs/heads/main",
+              "repo:LucasRios95/devops.ci.iac:ref:refs/heads/main"
+            ]
+          }
+        }
+    }]
+  })
+
+  tags = {
+    IAC = "True"
+  }
+}
+
 resource "aws_iam_role" "app-runner-role" {
   name = "app-runner-role"
 
