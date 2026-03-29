@@ -10,7 +10,7 @@ terraform {
     key    = "state/terraform.tfstate"
     region = "us-east-2"
   }
-  
+
 }
 
 provider "aws" {

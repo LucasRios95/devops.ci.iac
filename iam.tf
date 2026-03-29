@@ -63,7 +63,7 @@ resource "aws_iam_role" "tf-role" {
           Resource = "*"
         },
 
-         {
+        {
           Sid      = "Statement3",
           Action   = "s3:*",
           Effect   = "Allow",
